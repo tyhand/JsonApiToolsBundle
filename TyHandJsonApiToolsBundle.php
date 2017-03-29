@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use TyHand\JsonApiToolsBundle\DependencyInjection\Compiler\FormatterPass;
 use TyHand\JsonApiToolsBundle\DependencyInjection\Compiler\ResourcePass;
 
-class TyHand\JsonApiToolsBundle extends Bundle
+class TyHandJsonApiToolsBundle extends Bundle
 {
     /**
      * @{inheritDoc}
