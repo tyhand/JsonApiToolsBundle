@@ -20,7 +20,7 @@ class ResourceController extends Controller
      */
     public function resourceIndexAction(Request $request)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $result = $resource->find($request->query);
         $includeManager = $this->createIncludesManager($request);
         $linkGenerator = $this->createLinkGenerator($request);
@@ -46,7 +46,7 @@ class ResourceController extends Controller
      */
     public function resourceCreateAction(Request $request)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->toEntity(json_decode($request->getContent(), true)['data']);
 
         if ($resource->getUseVoters()) {
@@ -61,9 +61,9 @@ class ResourceController extends Controller
         $this->getDoctrine()->getManager()->persist($entity);
         $this->getDoctrine()->getManager()->flush();
 
-        $json = $resource->toJson($entity);
+        $json = ['data' => $resource->toJson($entity)];
 
-        return new JsonResponse($this->postProcessJson($request, $json));
+        return new JsonResponse($this->postProcessJson($request, $json]);
     }
 
     /**
@@ -73,7 +73,7 @@ class ResourceController extends Controller
      */
     public function resourceShowAction(Request $request, $id)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $this->getDoctrine()->getManager()->getRepository($resource->getEntity())->findOneById($id);
 
         if ($resource->getUseVoters()) {
@@ -97,7 +97,7 @@ class ResourceController extends Controller
      */
     public function resourceEditAction(Request $request, $id)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->toEntity(json_decode($request->getContent(), true)['data']);
 
         if ($resource->getUseVoters()) {
@@ -111,7 +111,7 @@ class ResourceController extends Controller
 
         $this->getDoctrine()->getManager()->flush();
 
-        return new JsonResponse($this->postProcessJson($request, $resource->toJson($entity)));
+        return new JsonResponse($this->postProcessJson($request, ['data' => $resource->toJson($entity)]));
     }
 
     /**
@@ -121,7 +121,7 @@ class ResourceController extends Controller
      */
     public function resourceDeleteAction(Request $request, $id)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
 
         if (!$resource->getAllowDelete()) {
@@ -145,7 +145,7 @@ class ResourceController extends Controller
      */
     public function resourceShowRelationshipsAction(Request $request, $id, $relationship)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
         if (!$entity) {
             throw new \Exception('Entity not found');
@@ -173,7 +173,7 @@ class ResourceController extends Controller
      */
     public function resourceShowRelationshipsFullAction(Request $request, $id, $relationship)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
         if (!$entity) {
             throw new \Exception('Entity not found');
@@ -188,7 +188,7 @@ class ResourceController extends Controller
         }
 
         $object = $relation->getRelatedFromEntity($entity);
-        $relatedResource = $this->get('jsonapi.resource_manager')->getResource($relation->getResource());
+        $relatedResource = $this->get('jsonapi_tools.resource_manager')->getResource($relation->getResource());
         $includeManager = $this->createIncludesManager($request);
 
         if (is_array($object) || $object instanceof \Doctrine\Common\Collections\Collection) {
@@ -216,7 +216,7 @@ class ResourceController extends Controller
      */
     public function resourceEditRelationshipsAction(Request $request, $id, $relationship)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
         if (!$entity) {
             throw new \Exception('Entity not found');
@@ -230,7 +230,7 @@ class ResourceController extends Controller
             $this->denyAccessUnlessGranted($resource->getVoterEditAttribute(), $entity);
         }
 
-        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi.resource_manager'));
+        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi_tools.resource_manager'));
 
         $errors = $resource->validate($entity, $this->get('validator'));
         if (0 < count($errors)) {
@@ -251,7 +251,7 @@ class ResourceController extends Controller
      */
     public function resourceAddRelationshipsAction(Request $request, $id, $relationship)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
         if (!$entity) {
             throw new \Exception('Entity not found');
@@ -268,7 +268,7 @@ class ResourceController extends Controller
         }
 
         $relation->setModeToAdd();
-        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi.resource_manager'));
+        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi_tools.resource_manager'));
 
         $errors = $resource->validate($entity, $this->get('validator'));
         if (0 < count($errors)) {
@@ -289,7 +289,7 @@ class ResourceController extends Controller
      */
     public function resourceRemoveRelationshipsAction(Request $request, $id, $relationship)
     {
-        $resource = $this->get('jsonapi.resource_manager')->getResource($this->getResourceName());
+        $resource = $this->get('jsonapi_tools.resource_manager')->getResource($this->getResourceName());
         $entity = $resource->loadEntityById($id);
         if (!$entity) {
             throw new \Exception('Entity not found');
@@ -306,7 +306,7 @@ class ResourceController extends Controller
         }
 
         $relation->setModeToRemove();
-        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi.resource_manager'));
+        $entity = $relation->addToEntity($entity, json_decode($request->getContent(), true), $this->get('jsonapi_tools.resource_manager'));
 
         $errors = $resource->validate($entity, $this->get('validator'));
         if (0 < count($errors)) {
@@ -357,9 +357,9 @@ class ResourceController extends Controller
     protected function createIncludesManager(Request $request)
     {
         if ($request->query->has('include')) {
-            return new IncludeManager($this->get('jsonapi.resource_manager'), explode(',', $request->query->get('include')));
+            return new IncludeManager($this->get('jsonapi_tools.resource_manager'), explode(',', $request->query->get('include')));
         } else {
-            return new IncludeManager($this->get('jsonapi.resource_manager'));
+            return new IncludeManager($this->get('jsonapi_tools.resource_manager'));
         }
     }
 
