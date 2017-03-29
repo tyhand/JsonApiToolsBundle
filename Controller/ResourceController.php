@@ -63,7 +63,7 @@ class ResourceController extends Controller
 
         $json = ['data' => $resource->toJson($entity)];
 
-        return new JsonResponse($this->postProcessJson($request, $json]);
+        return new JsonResponse($this->postProcessJson($request, $json));
     }
 
     /**
