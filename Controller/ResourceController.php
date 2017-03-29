@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use JsonApiBundle\Util\Inflect;
-use JsonApiBundle\JsonApiResource\IncludeManager;
-use JsonApiBundle\JsonApiResource\LinkGenerator;
+use TyHand\JsonApiToolsBundle\Util\Inflect;
+use TyHand\JsonApiToolsBundle\ApiResource\IncludeManager;
+use TyHand\JsonApiToolsBundle\ApiResource\LinkGenerator;
 
 class ResourceController extends Controller
 {
@@ -259,7 +259,7 @@ class ResourceController extends Controller
         $relation = $resource->getRelationshipByJsonName($relationship);
         if (!$relation) {
             throw new \Exception('Relationship not found');
-        } elseif (!($relation instanceof \JsonApiBundle\JsonApiResource\HasManyRelationship)) {
+        } elseif (!($relation instanceof \TyHand\JsonApiToolsBundle\ApiResource\HasManyRelationship)) {
             throw new \Exception('Method is only for Has Many Relationships');
         }
 
@@ -297,7 +297,7 @@ class ResourceController extends Controller
         $relation = $resource->getRelationshipByJsonName($relationship);
         if (!$relation) {
             throw new \Exception('Relationship not found');
-        } elseif (!($relation instanceof \JsonApiBundle\JsonApiResource\HasManyRelationship)) {
+        } elseif (!($relation instanceof \TyHand\JsonApiToolsBundle\ApiResource\HasManyRelationship)) {
             throw new \Exception('Method is only for Has Many Relationships');
         }
 
