@@ -1,0 +1,37 @@
+services:
+  jsonapi_tools.resource_reader:
+    class: TyHand\JsonApiToolsBundle\ApiResource\ResourceReader
+    arguments:
+      - "@annotation_reader"
+
+  jsonapi_tools.entity_loader:
+    class: TyHand\JsonApiToolsBundle\ApiResource\EntityLoader
+    arguments: ["@doctrine.orm.entity_manager"]
+
+  jsonapi_tools.resource_manager:
+    class: TyHand\JsonApiToolsBundle\ApiResource\ResourceManager
+    arguments:
+      - "@jsonapi_tools.resource_reader"
+      - "@jsonapi_tools.entity_loader"
+
+  jsonapi_tools.routing_loader:
+    class: TyHand\JsonApiToolsBundle\Routing\ResourceRouteLoader
+    arguments: ["@jsonapi_tools.resource_manager"]
+    tags:
+      - { name: routing.loader }
+
+  jsonapi_tools.formatter.default:
+    class: TyHand\JsonApiToolsBundle\ApiResource\Formatter
+    tags:
+      - { name: jsonapi_tools.formatter }
+
+  jsonapi_tools.formatter.datetime:
+    class: TyHand\JsonApiToolsBundle\ApiResource\DateFormatter
+    tags:
+      - { name: jsonapi_tools.formatter }
+
+  jsonapi_tools.listener.controller:
+    class: TyHand\JsonApiToolsBundle\EventListener\ResourceControllerListener
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
