@@ -1,6 +1,6 @@
 <?php
 
-namespace JsonApiBundle\Controller;
+namespace TyHand\JsonApiToolsBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
