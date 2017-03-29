@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class JsonApiToolsExtension extends Extension
+class TyHandJsonApiToolsExtension extends Extension
 {
     /**
      * Load the configurations settings
@@ -46,6 +46,6 @@ class JsonApiToolsExtension extends Extension
      */
     public function getAlias()
     {
-        return 'jsonapi_tools';
+        return 'ty_hand_json_api_tools';
     }
 }
