@@ -327,7 +327,7 @@ class ResourceController extends Controller
      */
     public function getResourceName()
     {
-        preg_match('/(\w+)Controller$/', static::class, $matches);
+        preg_match('/(\w+)Controller$/', get_class($this), $matches);
         if (isset($matches[1])) {
             return Inflect::pluralize(strtolower($matches[1]));
         } else {
