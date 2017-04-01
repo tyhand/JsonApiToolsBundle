@@ -58,6 +58,8 @@ class ResourceController extends Controller
             return $this->createErrorResponse($errors);
         }
 
+        $entity = $resource->postCreate($entity);
+
         $this->getDoctrine()->getManager()->persist($entity);
         $this->getDoctrine()->getManager()->flush();
 

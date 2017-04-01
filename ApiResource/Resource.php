@@ -550,6 +550,20 @@ abstract class Resource
         return $this;
     }
 
+    //////////////////////
+    // CONTROLLER HOOKS //
+    //////////////////////
+
+    /**
+     * Hook for the controller to call after the entity was created
+     * @param  mixed $entity Entity created
+     * @return mixed $entity Altered entity
+     */
+    public function postCreate($entity)
+    {
+
+    }
+
     /////////////////////////
     // GETTERS AND SETTERS //
     /////////////////////////
