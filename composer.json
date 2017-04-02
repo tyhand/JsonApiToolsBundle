@@ -16,7 +16,6 @@
   },
   "target-dir": "TyHand/JsonApiToolsBundle",
   "require": {
-    "php": ">=5.5.9",
     "symfony/symfony": "2.8.*",
     "doctrine/doctrine-bundle": "^1.4"
   }
