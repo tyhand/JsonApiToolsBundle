@@ -47,12 +47,6 @@ class HasOneRelationship extends Relationship
 
         // Check that the data key is present
         if (array_key_exists('data', $relationData)) {
-            // Since this is a full replacement, get the existing first
-            $original = $alteredEntity->{'get' . ucfirst($this->getProperty())}();
-            foreach($original as $item) {
-                $alteredEntity->{$this->removeMethod}($item);
-            }
-
             // Check if individual reference object or array or reference objects
             if (!is_array(reset($relationData['data']))) {
                 if (isset($relationData['data']['type']) && isset($relationData['data']['id'])) {
@@ -70,7 +64,7 @@ class HasOneRelationship extends Relationship
                 $loadedEntity = null;
             }
             if ($loadedEntity) {
-                $alteredEntity->{$this->setMethod}($loadedEntity);
+                $alteredEntity->{'set' . ucfirst($this->getProperty())}($loadedEntity);
             }
         }
 
