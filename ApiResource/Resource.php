@@ -561,7 +561,7 @@ abstract class Resource
      */
     public function postCreate($entity)
     {
-
+        return $entity;
     }
 
     /////////////////////////
