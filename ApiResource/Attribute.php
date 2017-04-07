@@ -71,10 +71,10 @@ class Attribute
     {
         if (is_array($entity)) {
             if (array_key_exists($this->getEntity(), $entity)) {
-                $json['attributes'][$this->getJsonName()] = $this->getFormatter()->toJson($entity[$this->getEntity()]->{'get' . $this->property}());
+                $json['attributes'][$this->getJsonName()] = $this->getFormatter()->toJson($entity[$this->getEntity()]->{'get' . ucfirst($this->property)}());
             }
         } else {
-            $json['attributes'][$this->getJsonName()] = $this->getFormatter()->toJson($entity->{'get' . $this->property}());
+            $json['attributes'][$this->getJsonName()] = $this->getFormatter()->toJson($entity->{'get' . ucfirst($this->property)}());
         }
 
         return $json;
