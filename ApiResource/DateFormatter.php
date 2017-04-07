@@ -11,7 +11,11 @@ class DateFormatter extends Formatter
      */
     public function toJson($value)
     {
-        return $value->format('c');
+        if ($value) {
+            return $value->format('c');
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -21,7 +25,11 @@ class DateFormatter extends Formatter
      */
     public function toEntity($value)
     {
-        return new \DateTime($value);
+        if ($value) {
+            return new \DateTime($value);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -33,3 +41,4 @@ class DateFormatter extends Formatter
         return 'datetime';
     }
 }
+
