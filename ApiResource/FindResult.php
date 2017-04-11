@@ -32,6 +32,12 @@ class FindResult
     private $pageSize;
 
     /**
+     * Extra meta data parameters
+     * @var array
+     */
+    private $extra = [];
+
+    /**
      * Output a json hash to be used for the meta portion of the response
      * @return array Json Hash
      */
@@ -41,12 +47,30 @@ class FindResult
         if (($this->count % $this->pageSize) > 0) {
             $pages++;
         }
-        return [
+        
+        $meta = [
             'count' => $this->count,
             'page-size' => $this->pageSize,
             'page-number' => $this->pageNumber,
             'pages' => $pages
         ];
+
+        foreach($this->extra as $key => $value) {
+            $meta[$key] = $value;
+        }
+
+        return $meta;
+    }
+
+    /**
+     * Add meta data value
+     * @param string $name  Key
+     * @param mixed  $value Value
+     */
+    public function addMetaDataValue($name, $value)
+    {
+        $this->extra[$name] = $value;
+        return $this;
     }
 
     /**

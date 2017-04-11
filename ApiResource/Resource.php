@@ -286,6 +286,9 @@ abstract class Resource
         $result->setCount($totalQueryBuilder->getQuery()->getSingleScalarResult());
         unset($totalQueryBuilder);
 
+        // Before pagination, mostly used for adding metadata
+        $this->beforePagination($parameters, $alias, $queryBuilder, $result);
+
         // Sorts
         if ($parameters->has('sort')) {
             $queryBuilder = $this->processSorts($parameters->get('sort'), $alias, $queryBuilder, $joinManager);
@@ -395,6 +398,18 @@ abstract class Resource
         $result->setPageSize($size);
 
         return $queryBuilder;
+    }
+
+    /**
+     * Hook before the pagination is applied but after the filters are used
+     * @param  array        $parameters   Parameters
+     * @param  string       $alias        Alias
+     * @param  QueryBuilder $queryBuilder Query Builder
+     * @param  FindResult   $result       Find Result
+     */
+    public function beforePagination($parameters, $alias, $queryBuilder, $result)
+    {
+
     }
 
     /**
