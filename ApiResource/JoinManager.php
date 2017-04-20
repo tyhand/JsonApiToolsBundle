@@ -74,8 +74,8 @@ class JoinManager
         }
 
         $aliasChain = implode('.', $resourceName);
-        $proprtyChain = [];
-        $resource = $this->joinResource($aliasChain, $outer, &$propertyChain);
+        $propertyChain = [];
+        $resource = $this->joinResource($aliasChain, $outer, $propertyChain);
         $attribute = $resource->getAttributeByJsonName($parts[count($parts) - 1]);
 
         return new AttributeExtract($attribute, $aliasChain, implode('.', $propertyChain));
@@ -88,7 +88,7 @@ class JoinManager
      * @param  array    $propertyChain Optional chain reference
      * @return Resource        Resource
      */
-    public function joinResource($name, $outer = false, $propertyChain = [])
+    public function joinResource($name, $outer = false, &$propertyChain = [])
     {
         $parts = explode('.', $name);
         $currentName = [];
@@ -106,7 +106,7 @@ class JoinManager
                     throw new \Exception('Relation not found');
                 }
 
-                $proprtyChain[] = $relation->getProperty();
+                $propertyChain[] = $relation->getProperty();
 
                 if ($relation instanceof HasOneRelationship) {
                     $resource = $this->manager->getResource(Inflect::pluralize($relation->getName()));

@@ -357,7 +357,7 @@ abstract class Resource
             } else {
                 $attributeExtract = $joinManager->extractAttribute($sort);
                 if ($attributeExtract->getAttribute()->getSortable()) {
-                    $queryBuilder->addOrderBy($attributeExtract->getAliasChain() . '.' . $attributeExtract->getAttribute()->getSortProperty(), $direction);
+                    $queryBuilder->addOrderBy($attributeExtract->getPropertyChain() . '.' . $attributeExtract->getAttribute()->getSortProperty(), $direction);
                 }
             }
         }

@@ -34,7 +34,7 @@ class SearchableResource extends Resource
                     $orX->add($queryBuilder->expr()->like('lower(' . $alias . '.' . $fieldName . ')', ':searchable_' . $key));
                 } else {
                     $attributeExtract = $joinManager->extractAttribute($fieldName, $outer);
-                    $orX->add($queryBuilder->expr()->like('lower(' . $attributeExtract->getAliasChain() . '.' . $attributeExtract->getAttribute()->getProperty() . ')', ':searchable_' . $key));
+                    $orX->add($queryBuilder->expr()->like('lower(' . $attributeExtract->getPropertyChain() . '.' . $attributeExtract->getAttribute()->getProperty() . ')', ':searchable_' . $key));
                 }
             }
             $queryBuilder->andWhere($orX);
