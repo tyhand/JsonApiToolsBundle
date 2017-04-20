@@ -53,6 +53,12 @@ class Attribute
     private $inputOnly;
 
     /**
+     * Property to sort on
+     * @var string
+     */
+    private $sortProperty;
+
+    /**
      * Constructor
      * @param string $name Name of the attribute
      */
@@ -260,4 +266,29 @@ class Attribute
         $this->inputOnly = $inputOnly;
         return $this;
     }
+
+    /**
+     * Get the value of Property to sort on
+     * @return string
+     */
+    public function getSortProperty()
+    {
+        if (null === $this->sortProperty) {
+            return $this->getProperty();
+        } else {
+            return $this->sortProperty;
+        }
+    }
+
+    /**
+     * Set the value of Property to sort on
+     * @param string sortProperty
+     * @return self
+     */
+    public function setSortProperty($sortProperty)
+    {
+        $this->sortProperty = $sortProperty;
+        return $this;
+    }
+
 }

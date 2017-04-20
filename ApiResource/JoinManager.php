@@ -74,19 +74,21 @@ class JoinManager
         }
 
         $aliasChain = implode('.', $resourceName);
-        $resource = $this->joinResource($aliasChain, $outer);
+        $proprtyChain = [];
+        $resource = $this->joinResource($aliasChain, $outer, &$propertyChain);
         $attribute = $resource->getAttributeByJsonName($parts[count($parts) - 1]);
 
-        return new AttributeExtract($attribute, $aliasChain);
+        return new AttributeExtract($attribute, $aliasChain, implode('.', $propertyChain));
     }
 
     /**
      * Join a resource
      * @param  string   $name  Name from root e.g. if bar is the root, and has foo as a relation this would just be foo.  If foo also has a relation called buzz then it will be foo.buzz
      * @param  boolean  $outer Perform an outer join instead of an inner
+     * @param  array    $propertyChain Optional chain reference
      * @return Resource        Resource
      */
-    public function joinResource($name, $outer = false)
+    public function joinResource($name, $outer = false, $propertyChain = [])
     {
         $parts = explode('.', $name);
         $currentName = [];
@@ -103,6 +105,8 @@ class JoinManager
                 if (!$relation) {
                     throw new \Exception('Relation not found');
                 }
+
+                $proprtyChain[] = $relation->getProperty();
 
                 if ($relation instanceof HasOneRelationship) {
                     $resource = $this->manager->getResource(Inflect::pluralize($relation->getName()));

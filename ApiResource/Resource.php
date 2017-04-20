@@ -352,12 +352,12 @@ abstract class Resource
             if (false === strpos($sort, '.')) {
                 // Check that the attribute is real and sortable
                 if (array_key_exists($sort, $this->getAttributes()) && $this->getAttributes()[$sort]->getSortable()) {
-                    $queryBuilder->addOrderBy($alias . '.' . $this->getAttributes()[$sort]->getProperty(), $direction);
+                    $queryBuilder->addOrderBy($alias . '.' . $this->getAttributes()[$sort]->getSortProperty(), $direction);
                 }
             } else {
                 $attributeExtract = $joinManager->extractAttribute($sort);
                 if ($attributeExtract->getAttribute()->getSortable()) {
-                    $queryBuilder->addOrderBy($attributeExtract->getAliasChain() . '.' . $attributeExtract->getAttribute()->getProperty(), $direction);
+                    $queryBuilder->addOrderBy($attributeExtract->getAliasChain() . '.' . $attributeExtract->getAttribute()->getSortProperty(), $direction);
                 }
             }
         }

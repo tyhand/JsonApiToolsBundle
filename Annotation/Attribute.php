@@ -53,6 +53,12 @@ class Attribute extends Annotation
     public $inputOnly = false;
 
     /**
+     * Sort property
+     * @var string
+     */
+    public $sortProperty = null;
+
+    /**
      * Get the entity if it exists
      * @return string Entity
      */
@@ -113,6 +119,15 @@ class Attribute extends Annotation
     public function getInputOnly()
     {
         return $this->inputOnly;
+    }
+
+    /**
+     * Get the value of the sort property
+     * @return string
+     */
+    public function getSortProperty()
+    {
+        return $this->sortProperty;
     }
 
 }

@@ -20,14 +20,22 @@ class AttributeExtract
     private $aliasChain;
 
     /**
-     * Constructor
-     * @param Attribute $attribute  Attribute
-     * @param string    $aliasChain Alias Chain
+     * Property Chain
+     * @var string
      */
-    public function __construct(Attribute $attribute, $aliasChain)
+    private $propertyChain;
+
+    /**
+     * Constructor
+     * @param Attribute $attribute     Attribute
+     * @param string    $aliasChain    Alias Chain
+     * @param string    $propertyChain Property Chain
+     */
+    public function __construct(Attribute $attribute, $aliasChain, $propertyChain)
     {
         $this->attribute = $attribute;
         $this->aliasChain = $aliasChain;
+        $this->propertyChain = $propertyChain;
     }
 
     /**
@@ -67,6 +75,26 @@ class AttributeExtract
     public function setAliasChain($aliasChain)
     {
         $this->aliasChain = $aliasChain;
+        return $this;
+    }
+
+    /**
+     * Get the value of Property Chain
+     * @return string
+     */
+    public function getPropertyChain()
+    {
+        return $this->propertyChain;
+    }
+
+    /** 
+     * Set the value of Property Chain
+     * @param string propertyChain
+     * @return self
+     */
+    public function setPropertyChain($propertyChain)
+    {
+        $this->propertyChain = $propertyChain;
         return $this;
     }
 }
