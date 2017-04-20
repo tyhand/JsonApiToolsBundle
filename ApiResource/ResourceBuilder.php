@@ -84,6 +84,7 @@ class ResourceBuilder
         $attribute->setSortable($annotation->getSortable());
         $attribute->setReadOnly($annotation->getReadOnly());
         $attribute->setInputOnly($annotation->getInputOnly());
+        $attribute->setSortProperty($annotation->getSortProperty());
 
         $this->resource->{$property} = $attribute;
         $this->resource->addAttribute($attribute);
