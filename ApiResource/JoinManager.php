@@ -97,17 +97,16 @@ class JoinManager
         $mapPointer = &$this->joins;
         foreach($parts as $part) {
             $currentName[] = $part;
+            $relation = $parentResource->getRelationshipByJsonName($part);
+            if (!$relation) {
+                throw new \Exception('Relation not found');
+            }
+            $propertyChain[] = $relation->getProperty();
+
             if (array_key_exists($part, $mapPointer)) {
                 $parentResource = $this->resources[implode('.', $currentName)];
             } else {
                 // Get the relation from the parent
-                $relation = $parentResource->getRelationshipByJsonName($part);
-                if (!$relation) {
-                    throw new \Exception('Relation not found');
-                }
-
-                $propertyChain[] = $relation->getProperty();
-
                 if ($relation instanceof HasOneRelationship) {
                     $resource = $this->manager->getResource(Inflect::pluralize($relation->getName()));
                 } else {
@@ -115,9 +114,9 @@ class JoinManager
                 }
 
                 if ($outer) {
-                    $this->queryBuilder->leftJoin($parentAlias . '.' . $relation->getProperty(), $part);
+                    $this->queryBuilder->leftJoin($parentAlias . '.' . $relation->getProperty(), $relation->getProperty());
                 } else {
-                    $this->queryBuilder->join($parentAlias . '.' . $relation->getProperty(), $part);
+                    $this->queryBuilder->join($parentAlias . '.' . $relation->getProperty(), $relation->getProperty());
                 }
 
                 $this->resources[implode('.', $currentName)] = $resource;
@@ -132,3 +131,4 @@ class JoinManager
         return $parentResource;
     }
 }
+
