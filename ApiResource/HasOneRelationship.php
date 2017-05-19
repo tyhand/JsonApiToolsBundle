@@ -48,14 +48,16 @@ class HasOneRelationship extends Relationship
         // Check that the data key is present
         if (array_key_exists('data', $relationData)) {
             // Check if individual reference object or array or reference objects
-            if (!is_array(reset($relationData['data']))) {
-                if (isset($relationData['data']['type']) && isset($relationData['data']['id'])) {
-                    $identifier = new ResourceIdentifier($relationData['data']['type'], $relationData['data']['id']);
-                } else {
-                    $identifier = null;
-                }
+            if (null == $relationData['data']) {
+                $identifier = null;
             } else {
-                throw new \Exception('Not a has many relationship');
+                if (!is_array(reset($relationData['data']))) {
+                    if (isset($relationData['data']['type']) && isset($relationData['data']['id'])) {
+                        $identifier = new ResourceIdentifier($relationData['data']['type'], $relationData['data']['id']);
+                    } else {
+                        $identifier = null;
+                    }
+                }
             }
 
             if ($identifier) {
