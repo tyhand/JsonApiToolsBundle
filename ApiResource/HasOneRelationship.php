@@ -65,8 +65,11 @@ class HasOneRelationship extends Relationship
             } else {
                 $loadedEntity = null;
             }
+
             if ($loadedEntity) {
                 $alteredEntity->{'set' . ucfirst($this->getProperty())}($loadedEntity);
+            } else {
+                $alteredEntity->{'set' . ucfirst($this->getProperty())}(null);
             }
         }
 
