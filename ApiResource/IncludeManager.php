@@ -26,6 +26,12 @@ class IncludeManager
     private $identifiers;
 
     /**
+     * Embedded Includes
+     * @var array
+     */
+    private $subIncludes;
+
+    /**
      * Constructor
      * @param ResourceManager $manager  Resource Manager
      * @param array           $includes Resources to include
@@ -35,6 +41,19 @@ class IncludeManager
         $this->includes = $includes;
         $this->manager = $manager;
         $this->identifiers = [];
+
+        // Generate a mapping of the subincludes if the exist
+        $this->subIncludes = [];
+        foreach($this->includes as $include) {
+            $position = strpos($include, '.');
+            if (false !== $position) {
+                $type = substr($include, 0, $position);
+                if (!array_key_exists($type, $this->subIncludes)) {
+                    $this->subIncludes[$type] = [];
+                }
+                $this->subIncludes[$type][] = substr($include, $position + 1);
+            }
+        }
     }
 
     /**
@@ -75,9 +94,20 @@ class IncludeManager
 
         foreach(array_keys($this->identifiers) as $type) {
             $resource = $this->manager->getResource($type);
+
+            if (array_key_exists($type, $this->subIncludes)) {
+                $subIncludeManager = new IncludeManager($this->manager, $this->subIncludes[$type]);
+            } else {
+                $subIncludeManager = null;
+            }
+
             foreach($this->identifiers[$type] as $identifier) {
                 $entity = $this->manager->loadEntityFromIdentifier($identifier);
-                $json[] = $resource->toJson($entity);
+                $json[] = $resource->toJson($entity, $subIncludeManager);
+            }
+
+            if (null !== $subIncludeManager && $subIncludeManager->hasData()) {
+                $json = array_merge($json, $subIncludeManager->toJson());
             }
         }
 
