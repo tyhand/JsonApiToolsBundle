@@ -51,6 +51,11 @@ class IncludeManager
                 if (!array_key_exists($type, $this->subIncludes)) {
                     $this->subIncludes[$type] = [];
                 }
+                
+                if (!array_key_exists($type, $this->includes)) {
+                    $this->includes[] = $type;
+                }
+                
                 $this->subIncludes[$type][] = substr($include, $position + 1);
             }
         }
