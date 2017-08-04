@@ -107,11 +107,7 @@ class JoinManager
                 $parentResource = $this->resources[implode('.', $currentName)];
             } else {
                 // Get the relation from the parent
-                if ($relation instanceof HasOneRelationship) {
-                    $resource = $this->manager->getResource(Inflect::pluralize($relation->getName()));
-                } else {
-                    $resource = $this->manager->getResource($relation->getName());
-                }
+                $resource = $this->manager->getResource($relation->getResource());
 
                 if ($outer) {
                     $this->queryBuilder->leftJoin($parentAlias . '.' . $relation->getProperty(), $relation->getProperty());
