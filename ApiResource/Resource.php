@@ -279,15 +279,15 @@ abstract class Resource
             $queryBuilder = $this->processFilters($parameters->get('filter'), $alias, $queryBuilder, $joinManager);
         }
 
-        // Get the count before pagination
+        // Before pagination, mostly used for adding metadata
         $result = new FindResult();
+        $this->beforePagination($parameters, $alias, $queryBuilder, $result);
+
+        // Get the count before pagination
         $totalQueryBuilder = clone $queryBuilder;
         $totalQueryBuilder->select('count(distinct ' . $alias . '.id)');
         $result->setCount($totalQueryBuilder->getQuery()->getSingleScalarResult());
         unset($totalQueryBuilder);
-
-        // Before pagination, mostly used for adding metadata
-        $this->beforePagination($parameters, $alias, $queryBuilder, $result);
 
         // Sorts
         if ($parameters->has('sort')) {
